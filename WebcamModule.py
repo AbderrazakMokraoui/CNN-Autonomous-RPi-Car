@@ -21,3 +21,5 @@ def getImg(display=False, size=[480, 240]):
 if __name__ == "__main__":
     while True:
         img = getImg(True)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break

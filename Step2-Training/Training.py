@@ -7,9 +7,10 @@ from utlis import *
 
 
 #### STEP 1 - INITIALIZE DATA
-path = "DataCollected"
+path = "../DataCollected"
 data = importDataInfo(path)
 print(data.head())
+
 
 #### STEP 2 - VISUALIZE AND BALANCE DATA
 data = balanceData(data, display=True)

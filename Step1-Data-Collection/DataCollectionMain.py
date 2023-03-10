@@ -1,30 +1,38 @@
 import WebcamModule as wM
 import DataCollectionModule as dcM
 import JoyStickModule as jsM
-import MotorModule as mM
+
+# import MotorModule as mM
 import cv2
 from time import sleep
+from mDev import *
+
+car = mDEV()
 
 
-maxThrottle = 0.25
-motor = mM.Motor(2, 3, 4, 17, 22, 27)
+maxThrottle = 380
+# motor = mM.Motor(2, 3, 4, 17, 22, 27)
 
 record = 0
 while True:
     joyVal = jsM.getJS()
-    #print(joyVal)
-    steering = joyVal['axis1']
-    throttle = joyVal['o']*maxThrottle
-    if joyVal['share'] == 1:
-        if record ==0: print('Recording Started ...')
-        record +=1
+    # print(joyVal)
+    steering = joyVal["axis1"]
+    #!! maybe put a minus sign for the steering if it's reversed ??
+    convertedSteering = numMap(steering, -1, 1, 0, 180)
+    throttle = joyVal["o"] * maxThrottle
+    if joyVal["share"] == 1:
+        if record == 0:
+            print("Recording Started ...")
+        record += 1
         sleep(0.300)
     if record == 1:
-        img = wM.getImg(True,size=[240,120])
-        dcM.saveData(img,steering)
+        img = wM.getImg(True, size=[240, 120])
+        dcM.saveData(img, steering)
     elif record == 2:
         dcM.saveLog()
         record = 0
 
-    motor.move(throttle,-steering)
+    # motor.move(throttle, -steering)
+    car.move(throttle, throttle, convertedSteering)
     cv2.waitKey(1)

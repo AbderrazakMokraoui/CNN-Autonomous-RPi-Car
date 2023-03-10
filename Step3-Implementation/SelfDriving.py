@@ -3,14 +3,21 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 import WebcamModule as wM
-import MotorModule as mM
+from mDev import *
+
+car = mDEV()
+
+# import MotorModule as mM
 
 #######################################
 steeringSen = 0.70  # Steering Sensitivity
-maxThrottle = 0.22  # Forward Speed %
-motor = mM.Motor(2, 3, 4, 17, 22, 27) # Pin Numbers
-model = load_model('/home/pi/Desktop/My Files/RpiRobot/model_V1.h5')
+maxThrottle = 380  # Forward Speed
+# motor = mM.Motor(2, 3, 4, 17, 22, 27)  # Pin Numbers
+model = load_model(
+    "/home/pi/Desktop/My Files/RpiRobot/model_V1.h5"
+)  # Path to our trained model on the RPi
 ######################################
+
 
 def preProcess(img):
     img = img[54:120, :, :]
@@ -20,13 +27,15 @@ def preProcess(img):
     img = img / 255
     return img
 
-while True:
 
+while True:
     img = wM.getImg(True, size=[240, 120])
     img = np.asarray(img)
     img = preProcess(img)
     img = np.array([img])
     steering = float(model.predict(img))
-    print(steering*steeringSen)
-    motor.move(maxThrottle,-steering*steeringSen)
+    steering = -steering * steeringSen
+    # motor.move(maxThrottle, steering)
+    convertedSteering = numMap(steering, -1, 1, 0, 180)
+    car.move(maxThrottle, maxThrottle, convertedSteering)
     cv2.waitKey(1)

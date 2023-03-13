@@ -13,6 +13,7 @@ import pandas as pd
 import os
 import cv2
 from datetime import datetime
+from threading import Thread
 
 global imgList, steeringList
 countFolder = 0
@@ -38,7 +39,7 @@ def saveData(img, steering):
     timestamp = str(datetime.timestamp(now)).replace(".", "")
     # print("timestamp =", timestamp)
     fileName = os.path.join(newPath, f"Image_{timestamp}.jpg")
-    cv2.imwrite(fileName, img)
+    Thread(target=cv2.imwrite, args=(fileName, img)).start()
     imgList.append(fileName)
     steeringList.append(steering)
 

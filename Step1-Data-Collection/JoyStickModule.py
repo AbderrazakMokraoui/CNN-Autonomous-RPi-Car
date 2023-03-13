@@ -31,6 +31,7 @@ axiss = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def getJS(name=""):
+    #print(controller)
     global buttons
     # retrieve any events ...
     for event in pygame.event.get():  # Analog Sticks

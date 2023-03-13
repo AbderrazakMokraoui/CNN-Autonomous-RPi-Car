@@ -42,6 +42,7 @@ history = model.fit(
     epochs=10,
     validation_data=dataGen(xVal, yVal, 50, 0),
     validation_steps=50,
+    verbose=1
 )
 
 #### STEP 9 - SAVE THE MODEL

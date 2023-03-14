@@ -8,6 +8,7 @@ using the opencv package
 import cv2
 
 cap = cv2.VideoCapture(0)
+print(cap)
 
 
 def getImg(display=False, size=[480, 240]):

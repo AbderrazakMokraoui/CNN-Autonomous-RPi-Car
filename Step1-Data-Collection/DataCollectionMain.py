@@ -6,51 +6,57 @@ import JoyStickModule as jsM
 import cv2
 from time import sleep
 from mDev import *
+import threading
 
 
 car = mDEV()
 
+car.setServo('3', 60)
+car.setServo('2', 100)
 
-maxThrottle = 400
+
+maxThrottle = 380
 # motor = mM.Motor(2, 3, 4, 17, 22, 27)
 
-
+images = []
+steerings = []
 record = 0
 while True:
+    #img = wM.getImg(display=True, size=[120, 60])
     joyVal = jsM.getJS()
     # print(joyVal)
-    steering = joyVal["axis1"] - 0.053
+    steering = joyVal["axis1"] - 0.028
     throttle = joyVal["R2"] * maxThrottle
     if (throttle == 0):
        throttle = joyVal["L2"] * -maxThrottle
-       steering = joyVal["axis1"] - 0.042
+       steering = joyVal["axis1"] - 0.03
     """
     throttle = -joyVal["axis2"] * 1000
     if steering != 0:
         if throttle == 0:
             throttle = 350
     """
-    #print(steering)
     #!! maybe put a minus sign for the steering if it's reversed ??
     convertedSteering = numMap(-steering, -1, 1, 0, 180)
     
-    print(steering)
+    #print(steering)
+    #print(joyVal["share"])
+    #print(record)
     
     if joyVal["share"] == 1:
-        if record == 0:
-            print("Recording Started ...")
-        record += 1
-        sleep(0.300)
+        if record == 0 : print("Recording Started ...")
+        record = 1
+        
     if record == 1:
-        img = wM.getImg(True, size=[240, 120])
+        img = wM.getImg(display=True, size=[480, 240])
+        #images.append(img)
+        #steerings.append(steering)
         dcM.saveData(img, steering)
-    elif record == 2:
-        dcM.saveLog()
-        record = 0
-
-    # motor.move(throttle, -steering)
+        if joyVal["o"] == 1:
+            cv2.destroyAllWindows
+            dcM.saveLog()
+            record = 0        
+        
     car.move(throttle, throttle, convertedSteering)
-    #car.setServo("2", convertedSteering)
-    #car.setServo("1", convertedSteering)
     cv2.waitKey(1)
 

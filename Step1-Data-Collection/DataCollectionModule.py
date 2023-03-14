@@ -13,13 +13,14 @@ import pandas as pd
 import os
 import cv2
 from datetime import datetime
-from threading import Thread
+
 
 global imgList, steeringList
 countFolder = 0
 count = 0
 imgList = []
 steeringList = []
+
 
 # GET CURRENT DIRECTORY PATH
 myDirectory = os.path.join(os.getcwd(), "DataCollected")
@@ -39,7 +40,7 @@ def saveData(img, steering):
     timestamp = str(datetime.timestamp(now)).replace(".", "")
     # print("timestamp =", timestamp)
     fileName = os.path.join(newPath, f"Image_{timestamp}.jpg")
-    Thread(target=cv2.imwrite, args=(fileName, img)).start()
+    cv2.imwrite(fileName, img)
     imgList.append(fileName)
     steeringList.append(steering)
 
@@ -59,10 +60,11 @@ def saveLog():
 
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture(1)
-    for x in range(10):
+    cap = cv2.VideoCapture(0)
+    for x in range(100):
         _, img = cap.read()
         saveData(img, 0.5)
         cv2.waitKey(1)
         cv2.imshow("Image", img)
     saveLog()
+    cv2.destroyAllWindows()

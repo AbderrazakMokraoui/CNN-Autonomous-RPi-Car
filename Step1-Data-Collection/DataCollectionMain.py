@@ -1,9 +1,10 @@
-import WebcamModule as wM
+from WebcamModule import *
 import DataCollectionModule as dcM
 import JoyStickModule as jsM
 
 # import MotorModule as mM
 import cv2
+import threading
 from time import sleep
 from mDev import *
 import threading

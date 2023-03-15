@@ -14,6 +14,8 @@ car = mDEV()
 
 car.setServo('3', 60)
 
+video = wM.WebcamModule().start()
+
 
 maxThrottle = 300
 # motor = mM.Motor(2, 3, 4, 17, 22, 27)
@@ -25,11 +27,11 @@ while True:
     #img = wM.getImg(display=True, size=[120, 60])
     joyVal = jsM.getJS()
     # print(joyVal)
-    steering = joyVal["axis1"] - 0.028
+    steering = joyVal["axis1"] + 0.16
     throttle = joyVal["R2"] * maxThrottle
     if (throttle == 0):
        throttle = joyVal["L2"] * -maxThrottle
-       steering = joyVal["axis1"] - 0.03
+       steering = joyVal["axis1"] + 0.17
     """
     throttle = -joyVal["axis2"] * 1000
     if steering != 0:
@@ -48,7 +50,10 @@ while True:
         record = 1
         
     if record == 1:
-        img = wM.getImg(display=True, size=[800, 400])
+        #img = wM.getImg(display=True, size=[800, 400])
+        img = video.frame
+        img = cv2.resize(img, (240, 120))
+        cv2.imshow('Frame', img)
         #images.append(img)
         #steerings.append(steering)
         dcM.saveData(img, steering)
@@ -58,6 +63,6 @@ while True:
             record = 0        
         
     car.move(throttle, throttle, convertedSteering)
-    car.setServo("2", numMap(-steering * 0.5, -1, 1, 0, 180))
+    car.setServo("2", numMap(-joyVal["axis1"] * 0.5, -1, 1, 0, 180))
     cv2.waitKey(1)
 

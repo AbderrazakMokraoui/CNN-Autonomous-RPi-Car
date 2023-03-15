@@ -27,12 +27,10 @@ class WebcamModule:
     a dedicated thread.
     """
     
-    def __init__(self, display=False, size=[480, 240], src=0):
-        self.size = size
-        self.display = display
+    def __init__(self, src=0):
+        
         self.stream = cv2.VideoCapture(src)
         (self.grabbed, self.frame) = self.stream.read()
-        
         self.stopped = False
         
     def start(self):
@@ -43,10 +41,10 @@ class WebcamModule:
         while not self.stopped:
             if not self.grabbed:
                 self.stop()
+                break
             else:
                 (self.grabbed, self.frame) = self.stream.read()
-                self.frame = cv2.resize(self.frame, (self.size[0], self.size[1]))
-                cv2.imshow('Frame', self.frame)
+                
                 
     
     def stop(self):
@@ -58,6 +56,8 @@ if __name__ == "__main__":
     video = WebcamModule().start()
     while True:
         frame = video.frame
+        frame = cv2.resize(frame, (240, 120))
+        cv2.imshow('Frame', frame)
         
         if cv2.waitKey(1) & 0xFF == ord("q"):
             video.stop()

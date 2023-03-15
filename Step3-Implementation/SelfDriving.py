@@ -6,15 +6,16 @@ import WebcamModule as wM
 from mDev import *
 
 car = mDEV()
+car.move(0,0)
 
 # import MotorModule as mM
 
 #######################################
-steeringSen = 0.70  # Steering Sensitivity
-maxThrottle = 380  # Forward Speed
+steeringSen = 0.7 # Steering Sensitivity
+maxThrottle = 300  # Forward Speed
 # motor = mM.Motor(2, 3, 4, 17, 22, 27)  # Pin Numbers
 model = load_model(
-    "/home/pi/Desktop/My Files/RpiRobot/model_V1.h5"
+    "/home/m5cs/Desktop/CNN-Autonomous-RPi-Car/Step2-Training/model.h5"
 )  # Path to our trained model on the RPi
 ######################################
 
@@ -29,11 +30,12 @@ def preProcess(img):
 
 
 while True:
-    img = wM.getImg(True, size=[240, 120])
+    img = wM.getImg(False, size=[240, 120])
     img = np.asarray(img)
     img = preProcess(img)
     img = np.array([img])
     steering = float(model.predict(img))
+    print(steering)
     steering = -steering * steeringSen
     # motor.move(maxThrottle, steering)
     convertedSteering = numMap(steering, -1, 1, 0, 180)

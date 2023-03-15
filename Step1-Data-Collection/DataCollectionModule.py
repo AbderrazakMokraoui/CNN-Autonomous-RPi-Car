@@ -48,16 +48,15 @@ def saveData(img, steering):
 # SAVE LOG FILE WHEN THE SESSION ENDS
 def saveLog():
     global imgList, steeringList
-    with lock:
-        rawData = {"Image": imgList, "Steering": steeringList}
-        df = pd.DataFrame(rawData)
-        df.to_csv(
-            os.path.join(myDirectory, f"log_{str(countFolder)}.csv"),
-            index=False,
-            header=False,
-        )
-        print("Log Saved")
-        print("Total Images: ", len(imgList))
+    rawData = {"Image": imgList, "Steering": steeringList}
+    df = pd.DataFrame(rawData)
+    df.to_csv(
+        os.path.join(myDirectory, f"log_{str(countFolder)}.csv"),
+        index=False,
+        header=False,
+    )
+    print("Log Saved")
+    print("Total Images: ", len(imgList))
 
 
 if __name__ == "__main__":

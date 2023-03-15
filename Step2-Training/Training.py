@@ -40,7 +40,7 @@ model.summary()
 history = model.fit(
     dataGen(xTrain, yTrain, 100, 1),
     steps_per_epoch=300,
-    epochs=10,
+    epochs=15,
     validation_data=dataGen(xVal, yVal, 100, 0),
     validation_steps=200,
 )

@@ -26,7 +26,7 @@ def importDataInfo(path):
     columns = ["Center", "Steering"]
     noOfFolders = len(os.listdir(path)) // 2
     data = pd.DataFrame()
-    for x in range(2):
+    for x in range(1):
         dataNew = pd.read_csv(os.path.join(path, f"log_{x}.csv"), names=columns)
         print(f"{x}:{dataNew.shape[0]} ", end="")
         #### REMOVE FILE PATH AND GET ONLY FILE NAME
@@ -41,7 +41,7 @@ def importDataInfo(path):
 #### STEP 2 - VISUALIZE AND BALANCE DATA
 def balanceData(data, display=True):
     nBin = 31
-    samplesPerBin = 300
+    samplesPerBin = 250
     hist, bins = np.histogram(data["Steering"], nBin)
     if display:
         center = (bins[:-1] + bins[1:]) * 0.5
@@ -128,10 +128,10 @@ def preProcess(img):
     return img
 
 
-# imgRe = preProcess(mpimg.imread('DataCollected/IMG18/Image_1601839810289305.jpg'))
-# # mpimg.imsave('Result.jpg',imgRe)
-# plt.imshow(imgRe)
-# plt.show()
+#imgRe = preProcess(mpimg.imread('../DataCollected/IMG0/Image_167882549679491.jpg'))
+#mpimg.imsave('Result.jpg',imgRe)
+#plt.imshow(imgRe)
+#plt.show()
 
 
 #### STEP 7 - CREATE MODEL

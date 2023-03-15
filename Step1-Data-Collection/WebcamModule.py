@@ -8,7 +8,7 @@ using the opencv package
 import cv2
 from threading import Thread
 
-
+"""
 cap = cv2.VideoCapture(0)
 
 def getImg(display=False, size=[480, 240]):
@@ -20,18 +20,19 @@ def getImg(display=False, size=[480, 240]):
 def closeWindow():
     cv2.destroyAllWindows()
 
-""" class WebcamModule:
-   
+""" 
+class WebcamModule:
+    """
     Class that continuously gets frames from a VideoCapture object with
     a dedicated thread.
+    """
     
-    
-    def __init__(self, display=False, size=[480, 240], src=0,):
+    def __init__(self, display=False, size=[480, 240], src=0):
         self.size = size
         self.display = display
         self.stream = cv2.VideoCapture(src)
         (self.grabbed, self.frame) = self.stream.read()
-        #self.frame = cv2.resize(self.frame, (self.size[0], self.size[1]))
+        
         self.stopped = False
         
     def start(self):
@@ -45,18 +46,19 @@ def closeWindow():
             else:
                 (self.grabbed, self.frame) = self.stream.read()
                 self.frame = cv2.resize(self.frame, (self.size[0], self.size[1]))
-                if self.display:
-                    cv2.imshow("Frame", self.frame)
+                cv2.imshow('Frame', self.frame)
                 
     
     def stop(self):
         self.stopped = True
-        #self.stream.destroyAllWindows() """
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
+    video = WebcamModule().start()
     while True:
-        img = getImg(True)
+        frame = video.frame
+        
         if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+            video.stop()
 

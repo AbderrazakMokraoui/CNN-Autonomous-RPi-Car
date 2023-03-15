@@ -1,4 +1,4 @@
-from WebcamModule import *
+import WebcamModule as wM
 import DataCollectionModule as dcM
 import JoyStickModule as jsM
 
@@ -49,7 +49,7 @@ while True:
         record = 1
         
     if record == 1:
-        img = wM.getImg(display=True, size=[480, 240])
+        img = wM.getImg(display=True, size=[240, 120])
         #images.append(img)
         #steerings.append(steering)
         dcM.saveData(img, steering)
@@ -59,5 +59,6 @@ while True:
             record = 0        
         
     car.move(throttle, throttle, convertedSteering)
+    car.setServo("2", numMap(-steering * 0.5, -1, 1, 0, 180))
     cv2.waitKey(1)
 

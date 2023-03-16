@@ -18,7 +18,6 @@ video = wM.WebcamModule().start()
 
 
 maxThrottle = 300
-# motor = mM.Motor(2, 3, 4, 17, 22, 27)
 
 images = []
 steerings = []

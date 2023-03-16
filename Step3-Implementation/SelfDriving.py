@@ -15,7 +15,7 @@ steeringSen = 0.7 # Steering Sensitivity
 maxThrottle = 300  # Forward Speed
 # motor = mM.Motor(2, 3, 4, 17, 22, 27)  # Pin Numbers
 model = load_model(
-    "/home/m5cs/Desktop/CNN-Autonomous-RPi-Car/Step2-Training/model.h5"
+    "/home/m5cs/Desktop/CNN-Autonomous-RPi-Car/Step2-Training/model-v2.h5"
 )  # Path to our trained model on the RPi
 ######################################
 
@@ -29,15 +29,23 @@ def preProcess(img):
     return img
 
 
+video = wM.WebcamModule().start()
+
 while True:
-    img = wM.getImg(False, size=[240, 120])
+    #img = wM.getImg(False, size=[240, 120])
+    img = video.frame
+    img = cv2.resize(img, (240, 120))
+    cv2.imshow('Frame', img)
     img = np.asarray(img)
     img = preProcess(img)
     img = np.array([img])
     steering = float(model.predict(img))
     print(steering)
     steering = -steering * steeringSen
+    #cameraSteering = (-steering) * 0.5
     # motor.move(maxThrottle, steering)
     convertedSteering = numMap(steering, -1, 1, 0, 180)
+
     car.move(maxThrottle, maxThrottle, convertedSteering)
+    #car.setServo("2", numMap(cameraSteering, -1, 1, 0, 180))
     cv2.waitKey(1)
